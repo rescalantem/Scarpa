@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Scarpa.Prism.Views.ConfigPage"
+             Title="{Binding Title}">
+    <StackLayout Padding="5">
+        <Image Source="logo.png"/>
+        <ActivityIndicator IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
+        <Label FontSize="Body"  Text="Para utilizar la APP, debe confirmar su número de celular, solicitando una clave de activación. En breve recibirá un código de 4 digitos que debe escribir para seguir adelante"/>
+        <Entry Keyboard="Numeric" FontSize="Body" 
+               Placeholder="Número de celular" MaxLength="10"
+               Text="{Binding NumCelular}"/>
+        <Button HeightRequest="70" Command="{Binding RegistrarCommand}"
+            Text="Solicitar clave" IsEnabled="{Binding IsEnabledBtnRegistrar}"/>
+        <StackLayout IsEnabled="{Binding IsEnabledStack}" Padding="10" VerticalOptions="CenterAndExpand">
+            <Entry Keyboard="Numeric" Placeholder="Clave (4 Digitos)"
+                   Text="{Binding ClaveSms}" MaxLength="4"/>
+            <Button Text="Activar" Command="{Binding ActivarCommand}" 
+                    HeightRequest="70"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

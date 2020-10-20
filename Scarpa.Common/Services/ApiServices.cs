@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Plugin.Connectivity;
 using Scarpa.Common.Responses;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,14 @@ namespace Scarpa.Common.Services
 {
     public class ApiServices : IApiServices
     {
+        public async Task<bool> CheckConnection(string url)
+        {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                return false;
+            }
+            return await CrossConnectivity.Current.IsRemoteReachable(url);
+        }
         public async Task<Response> GetListAsync<T>(string urlBase, string servicePrefix, string controller)
         {
             try

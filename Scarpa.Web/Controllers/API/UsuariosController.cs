@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Scarpa.Common.Entities;
+using Scarpa.Common.Requests;
+using Scarpa.Common.Responses;
+using Scarpa.Web.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Scarpa.Common.Entities;
-using Scarpa.Web.Data;
 
 namespace Scarpa.Web.Controllers.API
 {
@@ -37,13 +37,12 @@ namespace Scarpa.Web.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            var usuarios = await _context.Usuarios.FindAsync(id);
+            Usuarios usuarios = await _context.Usuarios.FindAsync(id);
 
             if (usuarios == null)
             {
                 return NotFound();
             }
-
             return Ok(usuarios);
         }
 
@@ -82,7 +81,7 @@ namespace Scarpa.Web.Controllers.API
             return NoContent();
         }
 
-        // POST: api/Usuarios
+        //POST: api/Usuarios
         [HttpPost]
         public async Task<IActionResult> PostUsuarios([FromBody] Usuarios usuarios)
         {
@@ -97,6 +96,35 @@ namespace Scarpa.Web.Controllers.API
             return CreatedAtAction("GetUsuarios", new { id = usuarios.UsuId }, usuarios);
         }
 
+        [HttpPost]
+        [Route("IsUser")]
+        public async Task<IActionResult> IsUser([FromBody] UsrLogin usr)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var usua = await _context.Usuarios.FirstOrDefaultAsync(p => p.UsuTelefono == usr.Celular);
+
+            if (usua != null)
+            {
+                if (usr.Contra == usua.UsuContra)
+                {
+                    var rep = new Response { IsSuccess = true, Message = "", Result = usua };
+                    return Ok(rep);
+                }
+                else
+                {
+                    return NotFound("Contraseña incorrecta");
+                }
+            }
+            else
+            {
+                return NotFound("No existe el celular");
+            }
+        }
+
         // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuarios([FromRoute] int id)
@@ -106,7 +134,7 @@ namespace Scarpa.Web.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            var usuarios = await _context.Usuarios.FindAsync(id);
+            Usuarios usuarios = await _context.Usuarios.FindAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
