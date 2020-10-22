@@ -8,11 +8,12 @@
 
     <StackLayout Padding="5">
 
-        <Image Source="logo.png" VerticalOptions="Center"
+        <Image Source="logo" VerticalOptions="Center"
                HorizontalOptions="Center"/>
         <Entry Placeholder="Escriba su contraseña"
-               IsPassword="True"/>
-        <Button Text="Aceptar" HeightRequest="70"/>
+               IsPassword="True" Text="{Binding Contra}"/>
+        <Button Text="Aceptar" HeightRequest="70"
+                IsEnabled="{Binding IsEnabled}" Command="{Binding ContraCommand}"/>
         <ActivityIndicator IsVisible="{Binding IsRunning}"
                            IsEnabled="{Binding IsRunning}"/>
     </StackLayout>

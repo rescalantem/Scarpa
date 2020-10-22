@@ -71,7 +71,8 @@ namespace Scarpa.Prism.ViewModels
             else
             {
                 Settings.Configurado = true;
-                await App.Current.MainPage.DisplayAlert("Scarpa", "Vamos adelante!", "Aceptar");
+                Settings.Celular = NumCelular;
+                await NavigationService.NavigateAsync("NavigationPage/LoginPage");                
                 return;
             }
         }

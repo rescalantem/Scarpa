@@ -38,6 +38,7 @@ namespace Scarpa.Prism
             containerRegistry.RegisterForNavigation<NavigationPage>();            
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<ConfigPage, ConfigPageViewModel>();
+            containerRegistry.RegisterForNavigation<ScarpaMasterDetailPage, ScarpaMasterDetailPageViewModel>();
         }
     }
 }

@@ -13,11 +13,24 @@ namespace Scarpa.Common.Helpers
         private static ISettings AppSettings => CrossSettings.Current;
 
         private const string configurado = "configurado";
-        private static readonly bool SettingsDefault = false;
+        private const string celular = "celular";
+        private const string token = "token";
 
+        private static readonly bool _boolDefault = false;
+        private static readonly string _stringDefault = string.Empty;
+        public static string Token 
+        { 
+            get => AppSettings.GetValueOrDefault(token,_stringDefault); 
+            set => AppSettings.AddOrUpdateValue(token,value); 
+        }
+        public static string Celular 
+        { 
+            get => AppSettings.GetValueOrDefault(celular, _stringDefault); 
+            set => AppSettings.AddOrUpdateValue(celular, value); 
+        }
         public static bool Configurado
         {
-            get => AppSettings.GetValueOrDefault(configurado, SettingsDefault);
+            get => AppSettings.GetValueOrDefault(configurado, _boolDefault);
             set => AppSettings.AddOrUpdateValue(configurado, value);
         }
 

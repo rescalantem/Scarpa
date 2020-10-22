@@ -110,7 +110,7 @@ namespace Scarpa.Web.Controllers.API
             if (usua != null)
             {
                 if (usr.Contra == usua.UsuContra)
-                {
+                {                    
                     var rep = new Response { IsSuccess = true, Message = "", Result = usua };
                     return Ok(rep);
                 }

@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              x:Class="Scarpa.Prism.App">
-  <Application.Resources>
+    <Application.Resources>
         <ResourceDictionary>
             <!-- Parameters -->
-            <x:String x:Key="UrlAPI">https://onsalezulu.azurewebsites.net</x:String>
+            <x:String x:Key="UrlAPI">https://192.168.0.10/scarpa_</x:String>
             <x:String x:Key="UrlSMS">http://sms-tecnomovil.com</x:String>
+
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>
