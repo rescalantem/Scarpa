@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scarpa.Common.Entities;
 using Scarpa.Common.Requests;
@@ -96,9 +98,10 @@ namespace Scarpa.Web.Controllers.API
             return CreatedAtAction("GetUsuarios", new { id = usuarios.UsuId }, usuarios);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
-        [Route("IsUser")]
-        public async Task<IActionResult> IsUser([FromBody] UsrLogin usr)
+        [Route("GetUserByCelular")]
+        public async Task<IActionResult> GetUserByCelular([FromBody] UsrLogin usr)
         {
             if (!ModelState.IsValid)
             {

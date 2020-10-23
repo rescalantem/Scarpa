@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com" 
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"             
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Scarpa.Prism.Views.AsistenciaPage"
+             Title="{Binding Title}">
+    <StackLayout>
+        <zxing:ZXingScannerView             
+            IsScanning="{Binding IsScanning}" 
+            IsAnalyzing="{Binding IsAnalyzing}"
+            IsVisible="{Binding IsVisible}"
+            Result="{Binding Result}"
+            ScanResultCommand="{Binding OnScanResultCommand}"            
+            HeightRequest="80">            
+        </zxing:ZXingScannerView>
+
+        <Label             
+            Text="{Binding Nombre}"
+            FontSize="Caption"/>
+        <Label             
+            Text="{Binding Puesto}"
+            FontSize="Caption"/>
+        <Label             
+            Text="{Binding Horario}"
+            FontSize="Caption"/>
+        <Label             
+            Text="{Binding Mensaje}"
+            FontSize="Caption"/>
+    </StackLayout>
+</ContentPage>

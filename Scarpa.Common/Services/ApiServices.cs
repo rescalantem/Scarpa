@@ -5,6 +5,7 @@ using Scarpa.Common.Responses;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,30 @@ namespace Scarpa.Common.Services
 {
     public class ApiServices : IApiServices
     {
+        public async Task<Response> GetUserByCelularAsync(string urlBase,string servicePrefix,string controller,string tokenType,string accessToken,UsrLogin usrLogin)
+        {
+            try
+            {
+                
+                var requestString = JsonConvert.SerializeObject(usrLogin);
+                var content = new StringContent(requestString, Encoding.UTF8, "application/json");
+                var client = new HttpClient{BaseAddress = new Uri(urlBase)};
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+                var url = $"{servicePrefix}{controller}";
+                var response = await client.PostAsync(url, content);
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode) return new Response { IsSuccess = false, Message = result };                
+
+                var owner = JsonConvert.DeserializeObject<Response>(result);
+                return new Response { IsSuccess = true, Result = owner };
+            }
+            catch (Exception ex)
+            {
+                return new Response { IsSuccess = false, Message = ex.Message };
+            }
+        }
         public async Task<Response> GetTokenAsync(string urlBase, string servicePrefix, string controller, UsrLogin request)
         {
             try
@@ -33,7 +58,7 @@ namespace Scarpa.Common.Services
                     };
                 }
 
-                Response token = JsonConvert.DeserializeObject<Response>(result);
+                TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(result);
                 return new Response
                 {
                     IsSuccess = true,

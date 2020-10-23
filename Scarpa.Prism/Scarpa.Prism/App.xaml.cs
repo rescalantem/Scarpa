@@ -27,8 +27,7 @@ namespace Scarpa.Prism
             else
             {
                 await NavigationService.NavigateAsync("NavigationPage/ConfigPage");
-            }
-            
+            }            
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -39,6 +38,7 @@ namespace Scarpa.Prism
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<ConfigPage, ConfigPageViewModel>();
             containerRegistry.RegisterForNavigation<ScarpaMasterDetailPage, ScarpaMasterDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<AsistenciaPage, AsistenciaPageViewModel>();
         }
     }
 }

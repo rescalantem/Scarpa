@@ -18,6 +18,7 @@ namespace Scarpa.Prism.Droid
             base.OnCreate(savedInstanceState);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
             LoadApplication(new App(new AndroidInitializer()));
         }
 
@@ -26,6 +27,8 @@ namespace Scarpa.Prism.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            global::ZXing.Net.Mobile.Forms.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

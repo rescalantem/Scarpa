@@ -48,6 +48,7 @@ namespace Scarpa.Web.Controllers.API
         public void Post([FromBody] string value)
         {
         }
+
         [HttpPost]
         [Route("CreateToken")]
         public async Task<IActionResult> CreateToken([FromBody] UsrLogin model)
@@ -57,33 +58,26 @@ namespace Scarpa.Web.Controllers.API
                 var user = await _dataContext.Usuarios.FirstOrDefaultAsync(u => u.UsuTelefono == model.Celular);
                 if (user != null)
                 {
-                    if (user.UsuContra==model.Contra)
+                    Claim[] claims = new[]
                     {
-                        Claim[] claims = new[]
-                        {
-                            new Claim(JwtRegisteredClaimNames.Sub, user.UsuTelefono),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                        };
+                        new Claim(JwtRegisteredClaimNames.Sub, user.UsuTelefono),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    };
 
-                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
-                        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                        var token = new JwtSecurityToken(
-                            _configuration["Tokens:Issuer"],
-                            _configuration["Tokens:Audience"],
-                            claims,
-                            expires: DateTime.UtcNow.AddMonths(12),
-                            signingCredentials: credentials);
-                        var results = new
-                        {
-                            token = new JwtSecurityTokenHandler().WriteToken(token),
-                            expiration = token.ValidTo
-                        };
-                        return Created(string.Empty, results);
-                    }
-                    else
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+                    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var token = new JwtSecurityToken(
+                        _configuration["Tokens:Issuer"],
+                        _configuration["Tokens:Audience"],
+                        claims,
+                        expires: DateTime.UtcNow.AddMonths(12),
+                        signingCredentials: credentials);
+                    var results = new
                     {
-                        return BadRequest("No validó: " + user.UsuNombre + " , " + model.Celular);
-                    }
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo
+                    };
+                    return Created(string.Empty, results);
                 }
                 else
                 {

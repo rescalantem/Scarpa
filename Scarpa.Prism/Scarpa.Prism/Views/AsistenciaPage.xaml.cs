@@ -1,0 +1,12 @@
+﻿using Xamarin.Forms;
+
+namespace Scarpa.Prism.Views
+{
+    public partial class AsistenciaPage : ContentPage
+    {
+        public AsistenciaPage()
+        {
+            InitializeComponent();
+        }
+    }
+}

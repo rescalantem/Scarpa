@@ -15,9 +15,15 @@ namespace Scarpa.Common.Helpers
         private const string configurado = "configurado";
         private const string celular = "celular";
         private const string token = "token";
+        private const string usuario = "usuario";
 
         private static readonly bool _boolDefault = false;
         private static readonly string _stringDefault = string.Empty;
+        public static string Usuario
+        {
+            get => AppSettings.GetValueOrDefault(usuario, _stringDefault);
+            set => AppSettings.AddOrUpdateValue(usuario, value);
+        }
         public static string Token 
         { 
             get => AppSettings.GetValueOrDefault(token,_stringDefault); 

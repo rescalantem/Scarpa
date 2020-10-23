@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <!-- Parameters -->
-            <x:String x:Key="UrlAPI">https://192.168.0.10/scarpa_</x:String>
+            <x:String x:Key="UrlAPI">http://charlotteremoto.ddns.net</x:String>
             <x:String x:Key="UrlSMS">http://sms-tecnomovil.com</x:String>
 
         </ResourceDictionary>

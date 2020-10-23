@@ -11,10 +11,9 @@
         <Image Source="logo" VerticalOptions="Center"
                HorizontalOptions="Center"/>
         <Entry Placeholder="Escriba su contraseña"
-               IsPassword="True" Text="{Binding Contra}"/>
+               IsPassword="True" Text="{Binding Contra}"/>        
         <Button Text="Aceptar" HeightRequest="70"
                 IsEnabled="{Binding IsEnabled}" Command="{Binding ContraCommand}"/>
-        <ActivityIndicator IsVisible="{Binding IsRunning}"
-                           IsEnabled="{Binding IsRunning}"/>
+        <ActivityIndicator IsRunning="{Binding IsRunning}" IsVisible="{Binding IsRunning}"/>
     </StackLayout>
 </ContentPage>
