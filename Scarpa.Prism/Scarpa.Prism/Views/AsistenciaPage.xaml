@@ -6,27 +6,56 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Scarpa.Prism.Views.AsistenciaPage"
              Title="{Binding Title}">
-    <StackLayout>
-        <zxing:ZXingScannerView             
-            IsScanning="{Binding IsScanning}" 
-            IsAnalyzing="{Binding IsAnalyzing}"
-            IsVisible="{Binding IsVisible}"
-            Result="{Binding Result}"
-            ScanResultCommand="{Binding OnScanResultCommand}"            
-            HeightRequest="80">            
-        </zxing:ZXingScannerView>
-
-        <Label             
-            Text="{Binding Nombre}"
-            FontSize="Caption"/>
-        <Label             
-            Text="{Binding Puesto}"
-            FontSize="Caption"/>
-        <Label             
-            Text="{Binding Horario}"
-            FontSize="Caption"/>
-        <Label             
-            Text="{Binding Mensaje}"
-            FontSize="Caption"/>
+    <StackLayout Padding="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>                
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />                
+            </Grid.RowDefinitions>
+            <zxing:ZXingScannerView
+                Grid.Row="0" 
+                Grid.Column="0"
+                Grid.RowSpan="3"                
+                HeightRequest="250"                
+                IsScanning="{Binding IsScanning}" 
+                IsAnalyzing="{Binding IsAnalyzing}"                
+                Result="{Binding Result,Mode=TwoWay}"                
+                ScanResultCommand="{Binding ScanResultCommand}"                                
+                BackgroundColor="Aqua">
+            </zxing:ZXingScannerView>
+            <Label
+                Grid.Row="0" 
+                Grid.Column="1"
+                FontSize="Body"
+                Text="{Binding Nombre}"/>
+            <Label
+                Grid.Row="1" 
+                Grid.Column="1"
+                Text="{Binding Puesto}"/>
+            <Label
+                Grid.Row="2" 
+                Grid.Column="1"
+                Text="{Binding Horario}"/>
+            <Label
+                Grid.Row="3" 
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                FontSize="Medium"
+                Text="{Binding Mensaje}"/>
+        </Grid>
+        <ActivityIndicator 
+                IsRunning="{Binding IsRunning}"
+                IsVisible="{Binding IsRunning}"
+                />
+        <Button Text="Leer de nuevo"
+                IsVisible="{Binding IsVisible}"
+                Command="{Binding LeerQRCommand}"
+                VerticalOptions="CenterAndExpand"/>
     </StackLayout>
 </ContentPage>

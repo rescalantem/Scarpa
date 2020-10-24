@@ -29,8 +29,7 @@ namespace Scarpa.Prism.ViewModels
         public ConfigPageViewModel(INavigationService navigation,IApiServices iapiservices):base(navigation)
         {
             Title = "SCARPA Registro";            
-            _isEnabledBtnRegistrar = true;
-            _numCelular = "4777000578";
+            _isEnabledBtnRegistrar = true;            
             _navigation = navigation;
             _iapiservices = iapiservices;
         }
@@ -83,7 +82,6 @@ namespace Scarpa.Prism.ViewModels
                 await App.Current.MainPage.DisplayAlert("Error", "Celular inválido, verifique!", "Aceptar");                
                 return;
             }
-
             IsRunning = true;
             IsEnabledBtnRegistrar = false;
             string url = App.Current.Resources["UrlSMS"].ToString();            
@@ -96,7 +94,6 @@ namespace Scarpa.Prism.ViewModels
                 await App.Current.MainPage.DisplayAlert("Error", "No hay internet disponible, verifique", "Aceptar");                
                 return;
             }
-
             var ran = new Random(Environment.TickCount);
             _clave = ran.Next(10).ToString() + ran.Next(10).ToString() + ran.Next(10).ToString() + ran.Next(10).ToString();
 

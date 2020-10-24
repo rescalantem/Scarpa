@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Plugin.Connectivity;
+using Scarpa.Common.Entities;
 using Scarpa.Common.Requests;
 using Scarpa.Common.Responses;
 using System;
@@ -13,6 +14,32 @@ namespace Scarpa.Common.Services
 {
     public class ApiServices : IApiServices
     {
+        public async Task<Response> PostChecadaAsync(string urlBase, string servicePrefix, string controller, string tokenType, string accessToken, asisChecada checada)
+        {
+            try
+            {
+
+                var requestString = JsonConvert.SerializeObject(checada);
+                var content = new StringContent(requestString, Encoding.UTF8, "application/json");
+                var client = new HttpClient { BaseAddress = new Uri(urlBase) };
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+                var url = $"{servicePrefix}{controller}";
+                var response = await client.PostAsync(url, content);
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode) return new Response { IsSuccess = false, Message = result , Result = null };
+
+                var serializado = JsonConvert.DeserializeObject<Response>(result);
+                return new Response { IsSuccess = serializado.IsSuccess , 
+                    Message= serializado.Message, 
+                    Result = serializado.Result };
+            }
+            catch (Exception ex)
+            {
+                return new Response { IsSuccess = false, Message = ex.Message };
+            }
+        }
         public async Task<Response> GetUserByCelularAsync(string urlBase,string servicePrefix,string controller,string tokenType,string accessToken,UsrLogin usrLogin)
         {
             try

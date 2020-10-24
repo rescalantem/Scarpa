@@ -5,9 +5,9 @@ namespace Scarpa.Web.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options)
+            : base(options)
         {
-
         }
 
         public virtual DbSet<ApartadoAbonos> ApartadoAbonos { get; set; }
@@ -18,6 +18,7 @@ namespace Scarpa.Web.Data
         public virtual DbSet<AsisClasificacion> AsisClasificacion { get; set; }
         public virtual DbSet<AsisDepartamento> AsisDepartamento { get; set; }
         public virtual DbSet<AsisExcepcion> AsisExcepcion { get; set; }
+        public virtual DbSet<AsisGuid> AsisGuid { get; set; }
         public virtual DbSet<AsisHorario> AsisHorario { get; set; }
         public virtual DbSet<AsisPuesto> AsisPuesto { get; set; }
         public virtual DbSet<AsisRoles> AsisRoles { get; set; }
@@ -62,14 +63,14 @@ namespace Scarpa.Web.Data
         public virtual DbSet<VentaDetalle> VentaDetalle { get; set; }
         public virtual DbSet<Ventas> Ventas { get; set; }
 
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            if (!optionsBuilder.IsConfigured)
-        //            {
-        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-        //                optionsBuilder.UseSqlServer("Data source=desarrollo2020;initial catalog=Scarpa;integrated security=true");
-        //            }
-        //        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Scarpa;Integrated Security=True");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -292,6 +293,28 @@ namespace Scarpa.Web.Data
                     .HasMaxLength(50);
             });
 
+            modelBuilder.Entity<AsisGuid>(entity =>
+            {
+                entity.HasKey(e => e.GuiId);
+
+                entity.ToTable("asisGuid");
+
+                entity.Property(e => e.GuiId).HasColumnName("guiId");
+
+                entity.Property(e => e.CajId).HasColumnName("cajId");
+
+                entity.Property(e => e.GuiValor)
+                    .IsRequired()
+                    .HasColumnName("guiValor")
+                    .HasMaxLength(40);
+
+                entity.HasOne(d => d.Caj)
+                    .WithMany(p => p.AsisGuid)
+                    .HasForeignKey(d => d.CajId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_asisGuid_tiendaCajas");
+            });
+
             modelBuilder.Entity<AsisHorario>(entity =>
             {
                 entity.HasKey(e => e.HorId);
@@ -302,15 +325,21 @@ namespace Scarpa.Web.Data
 
                 entity.Property(e => e.HorDDosEntrada).HasColumnName("horD_DosEntrada");
 
-                entity.Property(e => e.HorDDosHoras).HasColumnName("horD_DosHoras");
+                entity.Property(e => e.HorDDosHoras)
+                    .HasColumnName("horD_DosHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorDTresEntrada).HasColumnName("horD_TresEntrada");
 
-                entity.Property(e => e.HorDTresHoras).HasColumnName("horD_TresHoras");
+                entity.Property(e => e.HorDTresHoras)
+                    .HasColumnName("horD_TresHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorDUnoEntrada).HasColumnName("horD_UnoEntrada");
 
-                entity.Property(e => e.HorDUnoHoras).HasColumnName("horD_UnoHoras");
+                entity.Property(e => e.HorDUnoHoras)
+                    .HasColumnName("horD_UnoHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorDescripcion)
                     .IsRequired()
@@ -319,77 +348,113 @@ namespace Scarpa.Web.Data
 
                 entity.Property(e => e.HorEDosEntrada).HasColumnName("horE_DosEntrada");
 
-                entity.Property(e => e.HorEDosHoras).HasColumnName("horE_DosHoras");
+                entity.Property(e => e.HorEDosHoras)
+                    .HasColumnName("horE_DosHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorETresEntrada).HasColumnName("horE_TresEntrada");
 
-                entity.Property(e => e.HorETresHoras).HasColumnName("horE_TresHoras");
+                entity.Property(e => e.HorETresHoras)
+                    .HasColumnName("horE_TresHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorEUnoEntrada).HasColumnName("horE_UnoEntrada");
 
-                entity.Property(e => e.HorEUnoHoras).HasColumnName("horE_UnoHoras");
+                entity.Property(e => e.HorEUnoHoras)
+                    .HasColumnName("horE_UnoHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorJDosEntrada).HasColumnName("horJ_DosEntrada");
 
-                entity.Property(e => e.HorJDosHoras).HasColumnName("horJ_DosHoras");
+                entity.Property(e => e.HorJDosHoras)
+                    .HasColumnName("horJ_DosHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorJTresEntrada).HasColumnName("horJ_TresEntrada");
 
-                entity.Property(e => e.HorJTresHoras).HasColumnName("horJ_TresHoras");
+                entity.Property(e => e.HorJTresHoras)
+                    .HasColumnName("horJ_TresHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorJUnoEntrada).HasColumnName("horJ_UnoEntrada");
 
-                entity.Property(e => e.HorJUnoHoras).HasColumnName("horJ_UnoHoras");
+                entity.Property(e => e.HorJUnoHoras)
+                    .HasColumnName("horJ_UnoHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorLDosEntrada).HasColumnName("horL_DosEntrada");
 
-                entity.Property(e => e.HorLDosHoras).HasColumnName("horL_DosHoras");
+                entity.Property(e => e.HorLDosHoras)
+                    .HasColumnName("horL_DosHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorLTresEntrada).HasColumnName("horL_TresEntrada");
 
-                entity.Property(e => e.HorLTresHoras).HasColumnName("horL_TresHoras");
+                entity.Property(e => e.HorLTresHoras)
+                    .HasColumnName("horL_TresHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorLUnoEntrada).HasColumnName("horL_UnoEntrada");
 
-                entity.Property(e => e.HorLUnoHoras).HasColumnName("horL_UnoHoras");
+                entity.Property(e => e.HorLUnoHoras)
+                    .HasColumnName("horL_UnoHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorMDosEntrada).HasColumnName("horM_DosEntrada");
 
-                entity.Property(e => e.HorMDosHoras).HasColumnName("horM_DosHoras");
+                entity.Property(e => e.HorMDosHoras)
+                    .HasColumnName("horM_DosHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorMTresEntrada).HasColumnName("horM_TresEntrada");
 
-                entity.Property(e => e.HorMTresHoras).HasColumnName("horM_TresHoras");
+                entity.Property(e => e.HorMTresHoras)
+                    .HasColumnName("horM_TresHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorMUnoEntrada).HasColumnName("horM_UnoEntrada");
 
-                entity.Property(e => e.HorMUnoHoras).HasColumnName("horM_UnoHoras");
+                entity.Property(e => e.HorMUnoHoras)
+                    .HasColumnName("horM_UnoHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorRetardo).HasColumnName("horRetardo");
 
                 entity.Property(e => e.HorSDosEntrada).HasColumnName("horS_DosEntrada");
 
-                entity.Property(e => e.HorSDosHoras).HasColumnName("horS_DosHoras");
+                entity.Property(e => e.HorSDosHoras)
+                    .HasColumnName("horS_DosHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorSTresEntrada).HasColumnName("horS_TresEntrada");
 
-                entity.Property(e => e.HorSTresHoras).HasColumnName("horS_TresHoras");
+                entity.Property(e => e.HorSTresHoras)
+                    .HasColumnName("horS_TresHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorSUnoEntrada).HasColumnName("horS_UnoEntrada");
 
-                entity.Property(e => e.HorSUnoHoras).HasColumnName("horS_UnoHoras");
+                entity.Property(e => e.HorSUnoHoras)
+                    .HasColumnName("horS_UnoHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorVDosEntrada).HasColumnName("horV_DosEntrada");
 
-                entity.Property(e => e.HorVDosHoras).HasColumnName("horV_DosHoras");
+                entity.Property(e => e.HorVDosHoras)
+                    .HasColumnName("horV_DosHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorVTresEntrada).HasColumnName("horV_TresEntrada");
 
-                entity.Property(e => e.HorVTresHoras).HasColumnName("horV_TresHoras");
+                entity.Property(e => e.HorVTresHoras)
+                    .HasColumnName("horV_TresHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.HorVUnoEntrada).HasColumnName("horV_UnoEntrada");
 
-                entity.Property(e => e.HorVUnoHoras).HasColumnName("horV_UnoHoras");
+                entity.Property(e => e.HorVUnoHoras)
+                    .HasColumnName("horV_UnoHoras")
+                    .HasColumnType("decimal(3, 1)");
 
                 entity.Property(e => e.TieId).HasColumnName("tieId");
 
@@ -2317,7 +2382,7 @@ namespace Scarpa.Web.Data
                 entity.Property(e => e.UsuTelefono)
                     .IsRequired()
                     .HasColumnName("usuTelefono")
-                    .HasMaxLength(50);
+                    .HasMaxLength(10);
 
                 entity.HasOne(d => d.Cla)
                     .WithMany(p => p.Usuarios)

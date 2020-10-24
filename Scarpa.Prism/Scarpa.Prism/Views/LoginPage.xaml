@@ -12,7 +12,7 @@
                HorizontalOptions="Center"/>
         <Entry Placeholder="Escriba su contraseña"
                IsPassword="True" Text="{Binding Contra}"/>        
-        <Button Text="Aceptar" HeightRequest="70"
+        <Button Text="Aceptar"
                 IsEnabled="{Binding IsEnabled}" Command="{Binding ContraCommand}"/>
         <ActivityIndicator IsRunning="{Binding IsRunning}" IsVisible="{Binding IsRunning}"/>
     </StackLayout>

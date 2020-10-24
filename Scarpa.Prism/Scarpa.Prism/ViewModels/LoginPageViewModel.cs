@@ -18,13 +18,12 @@ namespace Scarpa.Prism.ViewModels
         private bool _isEnabled;
         private string _contra;
         private DelegateCommand _contraCommand;
-        private readonly IApiServices _apiService;
+        private readonly IApiServices _apiService; 
         private readonly INavigationService _navigationService;
         public LoginPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
             Title = "Scarpa - Seguridad";
             _isEnabled = true;
-            _contra = "nueva";
             _apiService = apiService;
             _navigationService = navigationService;
         }
@@ -50,6 +49,16 @@ namespace Scarpa.Prism.ViewModels
             {
                 IsEnabled = false;
                 IsRunning = true;
+
+                string url = App.Current.Resources["UrlAPI"].ToString();
+                bool connection = await _apiService.CheckConnection(url);
+                if (!connection)
+                {
+                    IsRunning = false;                    
+                    await App.Current.MainPage.DisplayAlert("Error", "No hay internet disponible, verifique", "Aceptar");
+                    return;
+                }
+
                 //Si el token no existe lo genera, por única vez
                 if (string.IsNullOrEmpty(Settings.Token))
                 {
@@ -60,9 +69,7 @@ namespace Scarpa.Prism.ViewModels
 
                 if (token?.Expiration > DateTime.Now)
                 {
-                    // Checar pass con token
-
-                    string url = App.Current.Resources["UrlAPI"].ToString();
+                    // Checar pass con token                    
                     UsrLogin usrLogin = new UsrLogin { Celular = Settings.Celular, Contra = calculaHash(Contra) };
                     Response usr = await _apiService.GetUserByCelularAsync(url, "scarpaapi_/api", "/Usuarios/GetUserByCelular", "bearer", token.Token, usrLogin);
                     if (!usr.IsSuccess)
@@ -72,14 +79,10 @@ namespace Scarpa.Prism.ViewModels
                         await App.Current.MainPage.DisplayAlert("Error", "La contraseña no es válida!", "Aceptar");
                         Contra = string.Empty;
                         return;
-                    }
-
-                    //Usuarios usua = (Usuarios)usr.Result;
+                    }                                    
 
                     Settings.Usuario = JsonConvert.SerializeObject(usr.Result);
-                    //Settings.Token = JsonConvert.SerializeObject(token);
-                    //Settings.IsRemembered = IsRemember;
-
+                    
                     Contra = string.Empty;
                     IsEnabled = true;
                     IsRunning = false;
