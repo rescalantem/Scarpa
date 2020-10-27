@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Xamarin.Forms;
@@ -17,6 +18,7 @@ namespace Scarpa.Prism.ViewModels
     {
         private string _numCelular;
         private string _claveSms;
+        private string _host;
         private bool _isEnabledStack;
         private bool _isRunning;
         private string _clave;
@@ -35,6 +37,11 @@ namespace Scarpa.Prism.ViewModels
         }
         public DelegateCommand RegistrarCommand => _registrarCommand ?? (_registrarCommand = new DelegateCommand(registrar));
         public DelegateCommand ActivarCommand => _activarCommand ?? (_activarCommand = new DelegateCommand(activar));
+        public string Host 
+        { 
+            get => _host; 
+            set => SetProperty(ref _host,value); 
+        }
         public string ClaveSms 
         { 
             get => _claveSms; 
@@ -62,7 +69,7 @@ namespace Scarpa.Prism.ViewModels
         }        
         private async void activar()
         {
-            if(ClaveSms != _claveSms)
+            if(ClaveSms != _clave)
             {
                 await App.Current.MainPage.DisplayAlert("Error","Clave inválida, verifique!","Aceptar");
                 return;
@@ -71,12 +78,18 @@ namespace Scarpa.Prism.ViewModels
             {
                 Settings.Configurado = true;
                 Settings.Celular = NumCelular;
+                Settings.HostApi = "http://" + Host;
                 await NavigationService.NavigateAsync("NavigationPage/LoginPage");                
                 return;
             }
         }
         private async void registrar()
-        {            
+        {
+            if (string.IsNullOrEmpty(Host))
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Falta el portal web!", "Aceptar");
+                return;
+            }
             if (NumCelular.Length != 10)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Celular inválido, verifique!", "Aceptar");                

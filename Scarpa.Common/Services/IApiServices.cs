@@ -7,10 +7,9 @@ namespace Scarpa.Common.Services
 {
     public interface IApiServices
     {
-        Task<Response> GetUserByCelularAsync(string urlBase, string servicePrefix, string controller, string tokenType, string accessToken, UsrLogin usrLogin);
-        Task<Response> PostChecadaAsync(string urlBase, string servicePrefix, string controller, string tokenType, string accessToken, asisChecada checada);
-        Task<Response> GetListAsync<T>(string urlBase, string servicePrefix, string controller);
+        Task<Response<Usuarios>> GetUserByCelularAsync(string urlBase, string servicePrefix, string controller, string tokenType, string accessToken, UsrLogin usrLogin);
+        Task<Response<asisChecada>> PostChecadaAsync(string urlBase, string servicePrefix, string controller, string tokenType, string accessToken, asisChecada checada);                
         Task<bool> CheckConnection(string url);
-        Task<Response> GetTokenAsync(string urlBase,string servicePrefix,string controller, UsrLogin request);        
+        Task<Response<TokenResponse>> GetTokenAsync(string urlBase,string servicePrefix,string controller, UsrLogin request);        
     }
 }

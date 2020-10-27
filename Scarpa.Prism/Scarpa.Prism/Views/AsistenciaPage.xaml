@@ -8,46 +8,58 @@
              Title="{Binding Title}">
     <StackLayout Padding="5">
         <Grid>
-            <Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>                
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>                
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />                
             </Grid.RowDefinitions>
             <zxing:ZXingScannerView
-                Grid.Row="0" 
+                Grid.Row="1" 
                 Grid.Column="0"
-                Grid.RowSpan="3"                
-                HeightRequest="250"                
+                Grid.RowSpan="2"
+                HeightRequest="200"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                BackgroundColor="Gainsboro"
                 IsScanning="{Binding IsScanning}" 
                 IsAnalyzing="{Binding IsAnalyzing}"                
                 Result="{Binding Result,Mode=TwoWay}"                
-                ScanResultCommand="{Binding ScanResultCommand}"                                
-                BackgroundColor="Aqua">
-            </zxing:ZXingScannerView>
+                ScanResultCommand="{Binding ScanResultCommand}"/>
             <Label
-                Grid.Row="0" 
-                Grid.Column="1"
-                FontSize="Body"
+                Grid.Row="0"
+                Grid.ColumnSpan="3"
+                Grid.Column="0"
+                FontSize="Title"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="Center"
                 Text="{Binding Nombre}"/>
             <Label
                 Grid.Row="1" 
                 Grid.Column="1"
+                Grid.ColumnSpan="2"
                 Text="{Binding Puesto}"/>
             <Label
                 Grid.Row="2" 
                 Grid.Column="1"
+                Grid.ColumnSpan="2"
                 Text="{Binding Horario}"/>
-            <Label
-                Grid.Row="3" 
+            <Image
+                Grid.Row="3"
                 Grid.Column="0"
+                HeightRequest="15"
+                Source="{Binding Puerta}"/>
+            <Label                
+                Grid.Row="3" 
+                Grid.Column="1"
                 Grid.ColumnSpan="2"
                 FontSize="Medium"
-                Text="{Binding Mensaje}"/>
+                Text="{Binding Mensaje}"/>            
         </Grid>
         <ActivityIndicator 
                 IsRunning="{Binding IsRunning}"
@@ -56,6 +68,6 @@
         <Button Text="Leer de nuevo"
                 IsVisible="{Binding IsVisible}"
                 Command="{Binding LeerQRCommand}"
-                VerticalOptions="CenterAndExpand"/>
+                VerticalOptions="EndAndExpand"/>
     </StackLayout>
 </ContentPage>

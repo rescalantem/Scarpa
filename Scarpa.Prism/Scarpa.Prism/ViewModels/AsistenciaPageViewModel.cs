@@ -16,6 +16,7 @@ namespace Scarpa.Prism.ViewModels
         private string _nombre;
         private string _puesto;
         private string _horario;
+        private string _puerta;
         private string _mensaje;
         private bool _isScanning;
         private bool _isAnalyzing;
@@ -34,8 +35,12 @@ namespace Scarpa.Prism.ViewModels
             _isVisible = false;
             _navigationService = navigationService;
             _apiService = apiService;
-            Puesto = "Puesto: ";
-            Horario = "Horario: ";            
+            
+            Usuarios usu = JsonConvert.DeserializeObject<Usuarios>(Settings.Usuario);
+
+            _nombre = usu.UsuNombre;
+            _puesto = "Puesto: " + usu.Pue.PueDescripcion;
+            _horario = "Horario: " + usu.Dep.DepDescripcion;
         }
         public DelegateCommand ScanResultCommand => _scanResultCommand ?? (_scanResultCommand = new DelegateCommand(ScanResult));
         public DelegateCommand LeerQRCommand => _leerQRCommand ?? (_leerQRCommand = new DelegateCommand(leerQR));        
@@ -43,6 +48,11 @@ namespace Scarpa.Prism.ViewModels
         {
             get => _result;
             set => SetProperty(ref _result, value);
+        }
+        public string Puerta 
+        { 
+            get => _puerta; 
+            set => SetProperty(ref _puerta,value); 
         }
         public string Nombre
         {
@@ -100,7 +110,7 @@ namespace Scarpa.Prism.ViewModels
             IsRunning = true;            
             IsAnalyzing = false;
             //IsScanning = false;            
-            string url = App.Current.Resources["UrlAPI"].ToString();
+            string url = Settings.HostApi;
 
             bool connection = await _apiService.CheckConnection(url);
             if (!connection)
@@ -113,13 +123,17 @@ namespace Scarpa.Prism.ViewModels
             }
             TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
             asisChecada che = new asisChecada { Guid = _result.Text, Celular = Settings.Celular };
-            Response registro = await _apiService.PostChecadaAsync(url, "scarpaapi_/api", "/Asistencia", "bearer", token.Token, che);
+            Response<asisChecada> registro = await _apiService.PostChecadaAsync(url, "scarpaapi_/api", "/Asistencia", "bearer", token.Token, che);
             
             if (!registro.IsSuccess)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "No se checo asistencia, intente de nuevo!", "Aceptar");
                 return;
             }
+
+            if (registro.Message.Contains("Entrada")) Puerta = "Enter02";
+            if (registro.Message.Contains("Salida")) Puerta = "Exit02";
+            if (!registro.Message.Contains("Entrada") && !registro.Message.Contains("Salida")) Puerta = "";
 
             Mensaje = registro.Message;
             IsRunning = false;            

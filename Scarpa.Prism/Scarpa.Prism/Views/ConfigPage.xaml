@@ -6,19 +6,27 @@
              x:Class="Scarpa.Prism.Views.ConfigPage"
              Title="{Binding Title}">
     <StackLayout Padding="5">
-        <Image Source="logo.png"/>
-        <ActivityIndicator IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
-        <Label FontSize="Body"  Text="Para utilizar la APP, debe confirmar su número de celular, solicitando una clave de activación. En breve recibirá un código de 4 digitos que debe escribir para seguir adelante"/>
-        <Entry Keyboard="Numeric" FontSize="Body" 
-               Placeholder="Número de celular" MaxLength="10"
+        <Image Source="logo.png"/>        
+        <Label FontSize="Title"  Text="Configuración:"/>
+        <StackLayout Orientation="Horizontal">
+            <Label VerticalOptions="CenterAndExpand" Text="Host: "/>
+            <Entry FontSize="Medium" VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="FillAndExpand"
+                   Placeholder="portal web"
+                   Text="{Binding Host}"/>            
+        </StackLayout>
+        <Label FontSize="Medium"               
+               Text="Escriba su número de celular y recibirá un código de 4 dígitos que debe escribir para seguir adelante."/>
+        <Entry Keyboard="Numeric" FontSize="Medium" 
+               Placeholder="número de celular" MaxLength="10"
                Text="{Binding NumCelular}"/>
-        <Button HeightRequest="70" Command="{Binding RegistrarCommand}"
+        <Button Command="{Binding RegistrarCommand}"
             Text="Solicitar clave" IsEnabled="{Binding IsEnabledBtnRegistrar}"/>
+        <ActivityIndicator IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
         <StackLayout IsEnabled="{Binding IsEnabledStack}" Padding="10" VerticalOptions="CenterAndExpand">
-            <Entry Keyboard="Numeric" Placeholder="Clave (4 Digitos)"
+            <Entry Keyboard="Numeric" Placeholder="clave (4 dígitos)"
                    Text="{Binding ClaveSms}" MaxLength="4"/>
-            <Button Text="Activar" Command="{Binding ActivarCommand}" 
-                    HeightRequest="70"/>
+            <Button Text="Activar" Command="{Binding ActivarCommand}"/>
         </StackLayout>
     </StackLayout>
 </ContentPage>

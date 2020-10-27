@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Navigation;
+using Scarpa.Common.Entities;
 using Scarpa.Common.Helpers;
 using Scarpa.Common.Requests;
 using Scarpa.Common.Responses;
@@ -23,6 +24,7 @@ namespace Scarpa.Prism.ViewModels
         public LoginPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
             Title = "Scarpa - Seguridad";
+            _contra = "abc1212";
             _isEnabled = true;
             _apiService = apiService;
             _navigationService = navigationService;
@@ -50,11 +52,12 @@ namespace Scarpa.Prism.ViewModels
                 IsEnabled = false;
                 IsRunning = true;
 
-                string url = App.Current.Resources["UrlAPI"].ToString();
+                string url = Settings.HostApi;
                 bool connection = await _apiService.CheckConnection(url);
                 if (!connection)
                 {
-                    IsRunning = false;                    
+                    IsRunning = false;
+                    IsEnabled = true;
                     await App.Current.MainPage.DisplayAlert("Error", "No hay internet disponible, verifique", "Aceptar");
                     return;
                 }
@@ -71,7 +74,7 @@ namespace Scarpa.Prism.ViewModels
                 {
                     // Checar pass con token                    
                     UsrLogin usrLogin = new UsrLogin { Celular = Settings.Celular, Contra = calculaHash(Contra) };
-                    Response usr = await _apiService.GetUserByCelularAsync(url, "scarpaapi_/api", "/Usuarios/GetUserByCelular", "bearer", token.Token, usrLogin);
+                    Response<Usuarios> usr = await _apiService.GetUserByCelularAsync(url, "scarpaapi_/api", "/Usuarios/GetUserByCelular", "bearer", token.Token, usrLogin);
                     if (!usr.IsSuccess)
                     {
                         IsEnabled = true;
@@ -79,9 +82,11 @@ namespace Scarpa.Prism.ViewModels
                         await App.Current.MainPage.DisplayAlert("Error", "La contraseña no es válida!", "Aceptar");
                         Contra = string.Empty;
                         return;
-                    }                                    
+                    }
 
-                    Settings.Usuario = JsonConvert.SerializeObject(usr.Result);
+                    Usuarios usua = usr.Result;
+
+                    Settings.Usuario = JsonConvert.SerializeObject(usua);
                     
                     Contra = string.Empty;
                     IsEnabled = true;
@@ -93,10 +98,10 @@ namespace Scarpa.Prism.ViewModels
         }
         private async Task GeneraTokenAsync()
         {
-            string url = App.Current.Resources["UrlAPI"].ToString();
+            string url = Settings.HostApi;
             UsrLogin usrLogin = new UsrLogin { Celular = Settings.Celular, Contra = "" };
 
-            Response response = await _apiService.GetTokenAsync(url, "/scarpaapi_/api", "/token/createtoken", usrLogin);
+            Response<TokenResponse> response = await _apiService.GetTokenAsync(url, "/scarpaapi_/api", "/token/createtoken", usrLogin);
 
             if (!response.IsSuccess)
             {
@@ -106,7 +111,8 @@ namespace Scarpa.Prism.ViewModels
                 Contra = string.Empty;
                 return;
             }
-            TokenResponse token = (TokenResponse)response.Result;
+            TokenResponse token = response.Result;
+
             Settings.Token = JsonConvert.SerializeObject(token);
             return;
         }

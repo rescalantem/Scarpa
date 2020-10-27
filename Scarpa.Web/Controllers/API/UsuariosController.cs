@@ -114,7 +114,7 @@ namespace Scarpa.Web.Controllers.API
             {
                 if (usr.Contra == usua.UsuContra)
                 {                    
-                    var rep = new Response { IsSuccess = true, Message = "", Result = usua };
+                    var rep = new Response<Usuarios> { IsSuccess = true, Message = "", Result = usua };
                     return Ok(rep);
                 }
                 else

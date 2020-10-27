@@ -53,7 +53,7 @@ namespace Scarpa.Web.Controllers.API
                 if (!HayExcepciones(usua.UsuId))
                 {
                     string res = AltaIncidencia(usua.UsuId, DateTime.Now, asisChecada.Guid);
-                    var rep = new Response { IsSuccess = true, Message = res, Result = null };
+                    var rep = new Response<asisChecada> { IsSuccess = true, Message = res, Result = null };
                     if (res != "") return Ok(rep); else return Ok("Hoy no checas");
                 }
             }

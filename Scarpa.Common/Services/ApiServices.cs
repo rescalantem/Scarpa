@@ -14,7 +14,7 @@ namespace Scarpa.Common.Services
 {
     public class ApiServices : IApiServices
     {
-        public async Task<Response> PostChecadaAsync(string urlBase, string servicePrefix, string controller, string tokenType, string accessToken, asisChecada checada)
+        public async Task<Response<asisChecada>> PostChecadaAsync(string urlBase, string servicePrefix, string controller, string tokenType, string accessToken, asisChecada checada)
         {
             try
             {
@@ -28,19 +28,20 @@ namespace Scarpa.Common.Services
                 var response = await client.PostAsync(url, content);
                 var result = await response.Content.ReadAsStringAsync();
 
-                if (!response.IsSuccessStatusCode) return new Response { IsSuccess = false, Message = result , Result = null };
+                if (!response.IsSuccessStatusCode) return new Response<asisChecada> { IsSuccess = false, Message = result , Result = null };
 
-                var serializado = JsonConvert.DeserializeObject<Response>(result);
-                return new Response { IsSuccess = serializado.IsSuccess , 
+                var serializado = JsonConvert.DeserializeObject<Response<asisChecada>>(result);
+                return new Response<asisChecada>
+                { IsSuccess = serializado.IsSuccess , 
                     Message= serializado.Message, 
                     Result = serializado.Result };
             }
             catch (Exception ex)
             {
-                return new Response { IsSuccess = false, Message = ex.Message };
+                return new Response<asisChecada> { IsSuccess = false, Message = ex.Message };
             }
         }
-        public async Task<Response> GetUserByCelularAsync(string urlBase,string servicePrefix,string controller,string tokenType,string accessToken,UsrLogin usrLogin)
+        public async Task<Response<Usuarios>> GetUserByCelularAsync(string urlBase,string servicePrefix,string controller,string tokenType,string accessToken,UsrLogin usrLogin)
         {
             try
             {
@@ -54,17 +55,18 @@ namespace Scarpa.Common.Services
                 var response = await client.PostAsync(url, content);
                 var result = await response.Content.ReadAsStringAsync();
 
-                if (!response.IsSuccessStatusCode) return new Response { IsSuccess = false, Message = result };                
+                if (!response.IsSuccessStatusCode) return new Response<Usuarios> { IsSuccess = false, Message = result };
 
-                var owner = JsonConvert.DeserializeObject<Response>(result);
-                return new Response { IsSuccess = true, Result = owner };
+                 Response<Usuarios> owner = JsonConvert.DeserializeObject<Response<Usuarios>>(result);
+
+                return new Response<Usuarios> { IsSuccess = true, Result = owner.Result };
             }
             catch (Exception ex)
             {
-                return new Response { IsSuccess = false, Message = ex.Message };
+                return new Response<Usuarios> { IsSuccess = false, Message = ex.Message };
             }
         }
-        public async Task<Response> GetTokenAsync(string urlBase, string servicePrefix, string controller, UsrLogin request)
+        public async Task<Response<TokenResponse>> GetTokenAsync(string urlBase, string servicePrefix, string controller, UsrLogin request)
         {
             try
             {
@@ -78,7 +80,7 @@ namespace Scarpa.Common.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new Response
+                    return new Response<TokenResponse>
                     {
                         IsSuccess = false,
                         Message = result,
@@ -86,7 +88,7 @@ namespace Scarpa.Common.Services
                 }
 
                 TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(result);
-                return new Response
+                return new Response<TokenResponse>
                 {
                     IsSuccess = true,
                     Result = token
@@ -94,7 +96,7 @@ namespace Scarpa.Common.Services
             }
             catch (Exception ex)
             {
-                return new Response
+                return new Response<TokenResponse>
                 {
                     IsSuccess = false,
                     Message = ex.Message
@@ -109,41 +111,41 @@ namespace Scarpa.Common.Services
             }
             return await CrossConnectivity.Current.IsRemoteReachable(url);
         }
-        public async Task<Response> GetListAsync<T>(string urlBase, string servicePrefix, string controller)
-        {
-            try
-            {
-                HttpClient client = new HttpClient { BaseAddress = new Uri(urlBase), };
+        //public async Task<Response> GetListAsync(string urlBase, string servicePrefix, string controller)
+        //{
+        //    try
+        //    {
+        //        HttpClient client = new HttpClient { BaseAddress = new Uri(urlBase), };
 
-                string url = $"{servicePrefix}{controller}";
-                HttpResponseMessage response = await client.GetAsync(url);
-                string result = await response.Content.ReadAsStringAsync();
+        //        string url = $"{servicePrefix}{controller}";
+        //        HttpResponseMessage response = await client.GetAsync(url);
+        //        string result = await response.Content.ReadAsStringAsync();
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    return new Response
-                    {
-                        IsSuccess = false,
-                        Message = result,
-                    };
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            return new Response
+        //            {
+        //                IsSuccess = false,
+        //                Message = result,
+        //            };
+        //        }
 
-                List<T> list = JsonConvert.DeserializeObject<List<T>>(result);
-                return new Response
-                {
-                    IsSuccess = true,
-                    Result = list
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+        //        List<T> list = JsonConvert.DeserializeObject<List<T>>(result);
+        //        return new Response
+        //        {
+        //            IsSuccess = true,
+        //            Result = list
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new Response
+        //        {
+        //            IsSuccess = false,
+        //            Message = ex.Message
+        //        };
+        //    }
 
-        }
+        //}
     }
 }

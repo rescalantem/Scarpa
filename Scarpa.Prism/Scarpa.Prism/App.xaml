@@ -5,8 +5,7 @@
              x:Class="Scarpa.Prism.App">
     <Application.Resources>
         <ResourceDictionary>
-            <!-- Parameters -->
-            <x:String x:Key="UrlAPI">http://charlotteremoto.ddns.net</x:String>
+            <!-- Parameters -->            
             <x:String x:Key="UrlSMS">http://sms-tecnomovil.com</x:String>
 
         </ResourceDictionary>
