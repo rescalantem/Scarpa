@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Scarpa.Prism.Views.InitPage"
+             BackgroundColor="{StaticResource ColorBackground}"
+             Title="{Binding Title}">
+    <ScrollView>
+        <AbsoluteLayout>        
+            <StackLayout 
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                Padding="5">
+                <Image Source="logo"/>
+                <Label FontSize="Title"  Text="Configuración:"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Host: " VerticalOptions="CenterAndExpand"/>
+                    <Entry HorizontalOptions="FillAndExpand"
+                           Placeholder="portal web" Text="{Binding Host}"/>
+                </StackLayout>
+                <Label 
+                    Text="Escriba su número de celular y recibirá un código de 4 dígitos que debe escribir para seguir adelante."/>
+                <Entry Keyboard="Numeric" 
+                       Placeholder="número de celular" MaxLength="10"
+                       Text="{Binding NumCelular}"/>
+                <Button Command="{Binding RegistrarCommand}" 
+                    Text="Solicitar clave" IsEnabled="{Binding IsEnabledBtnRegistrar}"/>
+                <StackLayout IsEnabled="{Binding IsEnabledStack}" Padding="10" VerticalOptions="CenterAndExpand">
+                    <Entry Keyboard="Numeric" Placeholder="clave (4 dígitos)"
+                           Text="{Binding ClaveSms}" MaxLength="4"/>
+                    <Button Text="Activar" Command="{Binding ActivarCommand}"/>
+                </StackLayout>
+            </StackLayout>
+            <ActivityIndicator
+                AbsoluteLayout.LayoutBounds=".5,.5,.2,.2"
+                AbsoluteLayout.LayoutFlags="All"
+                IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>        
+        </AbsoluteLayout>
+    </ScrollView>
+</ContentPage>

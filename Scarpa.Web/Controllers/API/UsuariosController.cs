@@ -7,6 +7,7 @@ using Scarpa.Common.Requests;
 using Scarpa.Common.Responses;
 using Scarpa.Web.Data;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -108,13 +109,29 @@ namespace Scarpa.Web.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            var usua = await _context.Usuarios.FirstOrDefaultAsync(p => p.UsuTelefono == usr.Celular);
+            var usua = await _context.Usuarios.
+                Include(p=>p.Pue).Include(d=>d.Dep).
+                FirstOrDefaultAsync(p => p.UsuTelefono == usr.Celular);
 
             if (usua != null)
             {
                 if (usr.Contra == usua.UsuContra)
-                {                    
-                    var rep = new Response<Usuarios> { IsSuccess = true, Message = "", Result = usua };
+                {
+                    Usuarios nuevo = new Usuarios
+                    {
+                        UsuNombre = usua.UsuNombre,
+                        UsuId = usua.UsuId,
+                        UsuActivo = usua.UsuActivo,
+                        UsuClaveNomina = usua.UsuClaveNomina,
+                        UsuEmail = usua.UsuEmail,
+                        UsuRfc = usua.UsuRfc,
+                        UsuCurp = usua.UsuCurp,
+                        UsuDireccion = usua.UsuDireccion,
+                        UsuTelefono = usua.UsuTelefono,
+                        Dep = new AsisDepartamento { DepDescripcion = usua.Dep.DepDescripcion, DepId = usua.Dep.DepId },
+                        Pue = new AsisPuesto { PueDescripcion = usua.Pue.PueDescripcion,PueId = usua.Dep.DepId }                        
+                    };
+                    var rep = new Response<Usuarios> { IsSuccess = true, Message = "", Result = nuevo };
                     return Ok(rep);
                 }
                 else

@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="Scarpa.Prism.Views.ConfigPage"
+             x:Class="Scarpa.Prism.Views.InventariosPage"
              BackgroundColor="{StaticResource ColorBackground}"
              Title="{Binding Title}">
-
+  
 </ContentPage>

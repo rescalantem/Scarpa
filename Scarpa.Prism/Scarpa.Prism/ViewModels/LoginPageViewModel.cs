@@ -23,8 +23,7 @@ namespace Scarpa.Prism.ViewModels
         private readonly INavigationService _navigationService;
         public LoginPageViewModel(INavigationService navigationService, IApiServices apiService) : base(navigationService)
         {
-            Title = "Scarpa - Seguridad";
-            _contra = "abc1212";
+            Title = "Scarpa - Seguridad";            
             _isEnabled = true;
             _apiService = apiService;
             _navigationService = navigationService;
@@ -78,21 +77,28 @@ namespace Scarpa.Prism.ViewModels
                     if (!usr.IsSuccess)
                     {
                         IsEnabled = true;
-                        IsRunning = false;
-                        await App.Current.MainPage.DisplayAlert("Error", "La contraseña no es válida!", "Aceptar");
+                        IsRunning = false;                        
                         Contra = string.Empty;
+                        await App.Current.MainPage.DisplayAlert("Error", "La contraseña no es válida!", "Aceptar");
                         return;
                     }
-
                     Usuarios usua = usr.Result;
-
-                    Settings.Usuario = JsonConvert.SerializeObject(usua);
-                    
-                    Contra = string.Empty;
-                    IsEnabled = true;
-                    IsRunning = false;
-
-                    await _navigationService.NavigateAsync("/ScarpaMasterDetailPage/NavigationPage/AsistenciaPage");
+                    if (usua.UsuActivo)
+                    {
+                        Settings.Usuario = JsonConvert.SerializeObject(usua);
+                        Contra = string.Empty;
+                        IsEnabled = true;
+                        IsRunning = false;
+                        await _navigationService.NavigateAsync("/ScarpaMasterDetailPage/NavigationPage/AsistenciaPage");
+                    }
+                    else
+                    {
+                        IsEnabled = true;
+                        IsRunning = false;
+                        Contra = string.Empty;
+                        await App.Current.MainPage.DisplayAlert("Error", "Su cuenta se encuentra suspendida!", "Aceptar");
+                        return;
+                    }                    
                 }
             }
         }

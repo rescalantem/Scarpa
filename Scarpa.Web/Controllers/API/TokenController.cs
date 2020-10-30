@@ -3,13 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Scarpa.Common.Requests;
-using Scarpa.Common.Services;
 using Scarpa.Web.Data;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,13 +19,13 @@ namespace Scarpa.Web.Controllers.API
     [ApiController]
     public class TokenController : ControllerBase
     {
-        private DataContext _dataContext;
-        private IConfiguration _configuration;
-        
-        public TokenController(DataContext dataContext,IConfiguration configuration)
+        private readonly DataContext _dataContext;
+        private readonly IConfiguration _configuration;
+
+        public TokenController(DataContext dataContext, IConfiguration configuration)
         {
             _dataContext = dataContext;
-            _configuration = configuration;        
+            _configuration = configuration;
         }
         // GET: api/<TokenController>
         [HttpGet]
@@ -55,7 +53,7 @@ namespace Scarpa.Web.Controllers.API
         {
             if (ModelState.IsValid)
             {
-                var user = await _dataContext.Usuarios.FirstOrDefaultAsync(u => u.UsuTelefono == model.Celular);
+                Common.Entities.Usuarios user = await _dataContext.Usuarios.FirstOrDefaultAsync(u => u.UsuTelefono == model.Celular);
                 if (user != null)
                 {
                     Claim[] claims = new[]
@@ -64,9 +62,9 @@ namespace Scarpa.Web.Controllers.API
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                     };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
-                    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                    var token = new JwtSecurityToken(
+                    SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+                    SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    JwtSecurityToken token = new JwtSecurityToken(
                         _configuration["Tokens:Issuer"],
                         _configuration["Tokens:Audience"],
                         claims,
@@ -97,6 +95,6 @@ namespace Scarpa.Web.Controllers.API
         public void Delete(int id)
         {
 
-        }        
+        }
     }
 }

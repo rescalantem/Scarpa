@@ -15,6 +15,7 @@ namespace Scarpa.Prism.ViewModels
     {
         private string _nombre;
         private string _puesto;
+        private string _departamento;
         private string _horario;
         private string _puerta;
         private string _mensaje;
@@ -32,15 +33,16 @@ namespace Scarpa.Prism.ViewModels
             Title = "Checa Asistencia";
             _isScanning = true;
             _isAnalyzing = true;
-            _isVisible = false;
+            _isVisible = false;           
             _navigationService = navigationService;
             _apiService = apiService;
             
             Usuarios usu = JsonConvert.DeserializeObject<Usuarios>(Settings.Usuario);
-
+            
             _nombre = usu.UsuNombre;
             _puesto = "Puesto: " + usu.Pue.PueDescripcion;
-            _horario = "Horario: " + usu.Dep.DepDescripcion;
+            _departamento = "Departamento: " + usu.Dep.DepDescripcion;
+            _horario = "Horario: ";
         }
         public DelegateCommand ScanResultCommand => _scanResultCommand ?? (_scanResultCommand = new DelegateCommand(ScanResult));
         public DelegateCommand LeerQRCommand => _leerQRCommand ?? (_leerQRCommand = new DelegateCommand(leerQR));        
@@ -58,6 +60,11 @@ namespace Scarpa.Prism.ViewModels
         {
             get => _nombre;
             set => SetProperty(ref _nombre, value);
+        }
+        public string Departamento 
+        { 
+            get => _departamento; 
+            set => SetProperty(ref _departamento,value); 
         }
         public string Puesto
         {
@@ -99,17 +106,14 @@ namespace Scarpa.Prism.ViewModels
             IsAnalyzing = true;
             IsVisible = false;
             IsRunning = false;            
-            Nombre = "";
-            Puesto = "Puesto: ";
-            Horario = "Horario: ";
             Mensaje = "";
+            Puerta = "";
         }
         public async void ScanResult()
         {
             IsVisible = true;
             IsRunning = true;            
-            IsAnalyzing = false;
-            //IsScanning = false;            
+            IsAnalyzing = false;            
             string url = Settings.HostApi;
 
             bool connection = await _apiService.CheckConnection(url);
@@ -133,7 +137,7 @@ namespace Scarpa.Prism.ViewModels
 
             if (registro.Message.Contains("Entrada")) Puerta = "Enter02";
             if (registro.Message.Contains("Salida")) Puerta = "Exit02";
-            if (!registro.Message.Contains("Entrada") && !registro.Message.Contains("Salida")) Puerta = "";
+            if (!registro.Message.Contains("Entrada") && !registro.Message.Contains("Salida")) Puerta = "Nomore";
 
             Mensaje = registro.Message;
             IsRunning = false;            

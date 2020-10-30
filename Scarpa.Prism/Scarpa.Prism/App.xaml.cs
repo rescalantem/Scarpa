@@ -26,7 +26,7 @@ namespace Scarpa.Prism
             }
             else
             {
-                await NavigationService.NavigateAsync("NavigationPage/ConfigPage");
+                await NavigationService.NavigateAsync("NavigationPage/InitPage");
             }            
         }
 
@@ -39,6 +39,12 @@ namespace Scarpa.Prism
             containerRegistry.RegisterForNavigation<ConfigPage, ConfigPageViewModel>();
             containerRegistry.RegisterForNavigation<ScarpaMasterDetailPage, ScarpaMasterDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<AsistenciaPage, AsistenciaPageViewModel>();
+            containerRegistry.RegisterForNavigation<InitPage, InitPageViewModel>();
+            containerRegistry.RegisterForNavigation<VentasPage, VentasPageViewModel>();
+            containerRegistry.RegisterForNavigation<InventariosPage, InventariosPageViewModel>();
+            containerRegistry.RegisterForNavigation<TraspasosPage, TraspasosPageViewModel>();
+            containerRegistry.RegisterForNavigation<MiPerfilPage, MiPerfilPageViewModel>();
+            containerRegistry.RegisterForNavigation<ConfigTabbedPage, ConfigTabbedPageViewModel>();
         }
     }
 }

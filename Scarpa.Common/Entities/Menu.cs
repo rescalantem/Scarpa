@@ -1,4 +1,4 @@
-﻿namespace Scarpa.Common.Models
+﻿namespace Scarpa.Common.Entities
 {
     public class Menu
     {

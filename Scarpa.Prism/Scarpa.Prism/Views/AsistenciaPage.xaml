@@ -5,6 +5,7 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"             
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Scarpa.Prism.Views.AsistenciaPage"
+             BackgroundColor="{StaticResource ColorBackground}"
              Title="{Binding Title}">
     <StackLayout Padding="5">
         <Grid>
@@ -17,12 +18,13 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <zxing:ZXingScannerView
                 Grid.Row="1" 
                 Grid.Column="0"
-                Grid.RowSpan="2"
+                Grid.RowSpan="3"
                 HeightRequest="200"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
@@ -48,14 +50,19 @@
                 Grid.Row="2" 
                 Grid.Column="1"
                 Grid.ColumnSpan="2"
+                Text="{Binding Departamento}"/>
+            <Label
+                Grid.Row="3" 
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
                 Text="{Binding Horario}"/>
             <Image
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="0"
-                HeightRequest="15"
+                HeightRequest="10"
                 Source="{Binding Puerta}"/>
             <Label                
-                Grid.Row="3" 
+                Grid.Row="4" 
                 Grid.Column="1"
                 Grid.ColumnSpan="2"
                 FontSize="Medium"
