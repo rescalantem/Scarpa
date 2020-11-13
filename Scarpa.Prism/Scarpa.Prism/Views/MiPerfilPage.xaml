@@ -6,5 +6,171 @@
              x:Class="Scarpa.Prism.Views.MiPerfilPage" 
              BackgroundColor="{StaticResource ColorBackground}"
              Title="{Binding Title}">
-  
+<ScrollView>
+    <AbsoluteLayout>            
+        <StackLayout 
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                Padding="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2" HeightRequest="150"
+                    Source="{Binding FotoUsuario}" Aspect="AspectFit"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Nombre: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="1"                      
+                    Text="{Binding Nombre}"
+                    Placeholder="Su nombre"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    VerticalOptions="CenterAndExpand"
+                    Text="F. nacimiento: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Text="{Binding Nacimiento}"
+                    Placeholder="Su nacimiento"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="3"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Dirección: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Text="{Binding Direccion}"
+                    Placeholder="Su dirección"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="4"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Email: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="4"
+                    Text="{Binding Email}"
+                    Placeholder="Su email"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="5"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Teléfono: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="5"
+                    Text="{Binding Telefono}"
+                    Placeholder="Su teléfono"/>
+                <Label                            
+                    Grid.Column="0"
+                    Grid.Row="6"
+                    VerticalOptions="CenterAndExpand"                    
+                    Text="Cve Nómina: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="6"
+                    Text="{Binding Nomina}"
+                    Placeholder="Su cve nómina"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="7"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Rfc: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="7"
+                    Text="{Binding Rfc}"
+                    Placeholder="Su rfc"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="8"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Curp: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="8"
+                    Text="{Binding Curp}"
+                    Placeholder="Su curp"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="9"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Departamento: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="9"
+                    Text="{Binding Departamento}"                    
+                    Placeholder="Su departamento"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="10"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Puesto: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="10"
+                    Text="{Binding Puesto}"
+                    Placeholder="Su puesto"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="11"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Clasificación: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="11"
+                    Text="{Binding Clasificacion}"
+                    Placeholder="Su clasificación"/>
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="12"
+                    VerticalOptions="CenterAndExpand"
+                    Text="Fecha alta: "/>
+                <Entry 
+                    Grid.Column="1"
+                    Grid.Row="12"
+                    Text="{Binding Alta}"                    
+                    Placeholder="Su fecha alta"/>
+                <Button
+                    Grid.Row="13"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"                        
+                    Text="Guardar"
+                    Command="{Binding GuardarCommand}"/>
+            </Grid>
+        </StackLayout>
+        <ActivityIndicator 
+            AbsoluteLayout.LayoutBounds=".7,.5,.2,.2"
+            AbsoluteLayout.LayoutFlags="All"
+            IsVisible="{Binding IsRunning}"
+            IsRunning="{Binding IsRunning}"/>        
+        </AbsoluteLayout>
+</ScrollView>
 </ContentPage>

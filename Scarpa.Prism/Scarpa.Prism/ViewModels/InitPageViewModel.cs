@@ -62,7 +62,7 @@ namespace Scarpa.Prism.ViewModels
         }
         private async void activar()
         {
-            if (ClaveSms != _clave)
+            if (string.IsNullOrEmpty(ClaveSms) || ClaveSms != _clave)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Clave inválida, verifique!", "Aceptar");
                 return;
@@ -124,7 +124,7 @@ namespace Scarpa.Prism.ViewModels
             {
                 IsRunning = false;
                 IsEnabledStack = true;
-                await App.Current.MainPage.DisplayAlert("Scarpa", "En un momento recibira un MSM con su clave!", "Aceptar");
+                await App.Current.MainPage.DisplayAlert("Scarpa", "En un momento recibirá un MSM con su clave!", "Aceptar");
                 return;
             }
             else
@@ -132,7 +132,7 @@ namespace Scarpa.Prism.ViewModels
                 IsRunning = false;
                 IsEnabledBtnRegistrar = true;
                 IsEnabledStack = true;
-                await App.Current.MainPage.DisplayAlert("Error", "Ocurrio un error en el SMS, intente mas tarde!", "Aceptar");
+                await App.Current.MainPage.DisplayAlert("Error", "Ocurrió un error en el SMS, intente mas tarde!", "Aceptar");
                 return;
             }
         }

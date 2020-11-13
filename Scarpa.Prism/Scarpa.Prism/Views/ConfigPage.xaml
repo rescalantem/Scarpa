@@ -6,5 +6,52 @@
              x:Class="Scarpa.Prism.Views.ConfigPage"
              BackgroundColor="{StaticResource ColorBackground}"
              Title="{Binding Title}">
-
+    <StackLayout
+        Padding="5">
+        <Image            
+            Source="logo_titulo" HeightRequest="90"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Host Scarpa: " VerticalOptions="CenterAndExpand"/>
+            <Entry Text="{Binding Host}" HorizontalOptions="FillAndExpand"
+                Placeholder="Dirección portal"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <CheckBox x:Name="checkBox" />
+            <Label Text="Cambiar contraseña" VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+        <Entry IsPassword="True" Placeholder="Nueva contraseña" IsVisible="false">
+            <Entry.Triggers>
+                <DataTrigger TargetType="Entry"
+                             Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                             Value="true">
+                    <Setter Property="IsVisible" Value="true"/>
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+        <Label Text="Confirmar contraseña:" IsVisible="false">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                     Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                     Value="True">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+        <Entry IsPassword="True" Placeholder="Confirme contraseña" IsVisible="false">
+            <Entry.Triggers>
+                <DataTrigger TargetType="Entry"
+                             Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                             Value="true">
+                    <Setter Property="IsVisible" Value="true"/>
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+        <ActivityIndicator
+                IsVisible="{Binding IsRunning}"
+                IsRunning="{Binding IsRunning}"/>
+        <Button 
+            IsEnabled="{Binding IsEnabled}"
+            Command="{Binding GuardarCommand}"
+            Text="Guardar"/>
+    </StackLayout>
 </ContentPage>

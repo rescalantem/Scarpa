@@ -8,8 +8,8 @@
             Title="{Binding Title}">
 
     <TabbedPage.Children>
-        <local:ConfigPage />
         <local:MiPerfilPage />
+        <local:ConfigPage />
     </TabbedPage.Children>
 
 

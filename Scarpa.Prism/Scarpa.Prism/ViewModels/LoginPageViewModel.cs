@@ -46,6 +46,11 @@ namespace Scarpa.Prism.ViewModels
         }
         private async void contra()
         {
+            if (Contra == "reset")
+            {
+                Settings.Configurado = false;
+                await _navigationService.NavigateAsync("InitPage");
+            }
             if (!string.IsNullOrEmpty(Contra))
             {
                 IsEnabled = false;
@@ -57,7 +62,7 @@ namespace Scarpa.Prism.ViewModels
                 {
                     IsRunning = false;
                     IsEnabled = true;
-                    await App.Current.MainPage.DisplayAlert("Error", "No hay internet disponible, verifique", "Aceptar");
+                    await App.Current.MainPage.DisplayAlert("Error", "El portal de enlace no responde, verifique!", "Aceptar");
                     return;
                 }
 

@@ -110,7 +110,7 @@ namespace Scarpa.Web.Controllers.API
             }
 
             var usua = await _context.Usuarios.
-                Include(p=>p.Pue).Include(d=>d.Dep).
+                Include(p=>p.Pue).Include(d=>d.Dep).Include(c=>c.Cla).
                 FirstOrDefaultAsync(p => p.UsuTelefono == usr.Celular);
 
             if (usua != null)
@@ -129,7 +129,11 @@ namespace Scarpa.Web.Controllers.API
                         UsuDireccion = usua.UsuDireccion,
                         UsuTelefono = usua.UsuTelefono,
                         Dep = new AsisDepartamento { DepDescripcion = usua.Dep.DepDescripcion, DepId = usua.Dep.DepId },
-                        Pue = new AsisPuesto { PueDescripcion = usua.Pue.PueDescripcion,PueId = usua.Dep.DepId }                        
+                        Pue = new AsisPuesto { PueDescripcion = usua.Pue.PueDescripcion,PueId = usua.Dep.DepId },
+                        Cla = new AsisClasificacion { ClaId = (int)usua.ClaId, ClaDescripcion = usua.Cla.ClaDescripcion },
+                        UsuFechaInicial = usua.UsuFechaInicial,
+                        UsuNacimiento = usua.UsuNacimiento,                        
+                        UsuFoto = usua.UsuFoto
                     };
                     var rep = new Response<Usuarios> { IsSuccess = true, Message = "", Result = nuevo };
                     return Ok(rep);

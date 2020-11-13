@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Scarpa.Common.Requests
+﻿namespace Scarpa.Common.Requests
 {
     public class UsrLogin
     {
